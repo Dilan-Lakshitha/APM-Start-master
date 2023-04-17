@@ -22,17 +22,19 @@ export class ProductEditComponent {
               private router:Router) { }
 
   ngOnInit():void{
-    const resolvedData: ProductResolved=this.route.snapshot.data['resolvedData'];
+    this.route.data.subscribe(data=>{
+    const resolvedData: ProductResolved=data['resolvedData'];
     this.errorMessage=resolvedData.error;
     this.onProductRetrieved(resolvedData.product);
+    })
   }
   
-  getProduct(id: number): void {
-    this.productService.getProduct(id).subscribe({
-      next: product => this.onProductRetrieved(product),
-      error: err => this.errorMessage = err
-    });
-  }
+  // getProduct(id: number): void {
+  //   this.productService.getProduct(id).subscribe({
+  //     next: product => this.onProductRetrieved(product),
+  //     error: err => this.errorMessage = err
+  //   });
+  // }
 
   onProductRetrieved(product: Product): void {
     this.product = product;
