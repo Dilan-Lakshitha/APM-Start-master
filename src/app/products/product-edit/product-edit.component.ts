@@ -4,7 +4,7 @@ import { MessageService } from '../../messages/message.service';
 
 import { Product, ProductResolved } from '../product';
 import { ProductService } from '../product.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   templateUrl: './product-edit.component.html',
@@ -16,15 +16,23 @@ export class ProductEditComponent {
 
   product: Product;
 
-  constructor(private messageService: MessageService,
-              private route:ActivatedRoute) { }
+  constructor(private productService: ProductService,
+              private messageService: MessageService,
+              private route:ActivatedRoute,
+              private router:Router) { }
 
   ngOnInit():void{
-    const resolvedData:ProductResolved=this.route.snapshot.data['resolvedData'];
+    const resolvedData: ProductResolved=this.route.snapshot.data['resolvedData'];
     this.errorMessage=resolvedData.error;
     this.onProductRetrieved(resolvedData.product);
-      }
-
+  }
+  
+  getProduct(id: number): void {
+    this.productService.getProduct(id).subscribe({
+      next: product => this.onProductRetrieved(product),
+      error: err => this.errorMessage = err
+    });
+  }
 
   onProductRetrieved(product: Product): void {
     this.product = product;
