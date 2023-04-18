@@ -14,8 +14,23 @@ export class ProductEditComponent {
   pageTitle = 'Product Edit';
   errorMessage: string;
 
-  product: Product;
+  
   private dataIsValid:{[key: string]:boolean}={};
+
+  get isDirty():boolean{
+    return JSON.stringify(this.originalProduct)!==JSON.stringify(this.currentProduct);
+  }
+
+  private currentProduct:Product;
+  private originalProduct:Product;
+  
+  get product():Product{
+    return this.currentProduct;
+  }
+  set product(value: Product){
+    this.currentProduct=value;
+    this.originalProduct={...value};
+  }
 
   constructor(private productService: ProductService,
               private messageService: MessageService,
@@ -74,6 +89,12 @@ export class ProductEditComponent {
       Object.keys(this.dataIsValid).every(d=>this.dataIsValid[d]===true));
   }
 
+  reset():void{
+    this.dataIsValid=null;
+    this.currentProduct=null;
+    this.originalProduct=null;
+  }
+
   saveProduct(): void {
     if (true === true) {
       if (this.product.id === 0) {
@@ -96,7 +117,7 @@ export class ProductEditComponent {
     if (message) {
       this.messageService.addMessage(message);
     }
-
+    this.reset();
     // Navigate back to the product list
     this.router.navigate(['/products']);
   }
