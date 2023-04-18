@@ -16,9 +16,9 @@ import { AuthGuard } from '../user/auth.guard';
   imports: [
     SharedModule,
     RouterModule.forChild([
-      {path: 'products',
-        canActivate:[AuthGuard],
-        children: [
+      // {path: 'products',
+      //   canActivate:[AuthGuard],
+      //   children: [
           {path: '',component:ProductListComponent},
           {path: ':id',component:ProductDetailComponent,resolve:{resolvedData:ProductResolver}},
           {path: ':id/edit',component:ProductEditComponent, canDeactivate: [ProductEditGuard] ,resolve:{resolvedData:ProductResolver},
@@ -37,8 +37,8 @@ import { AuthGuard } from '../user/auth.guard';
               component: ProductEditTagsComponent
             }
           ]}
-        ]
-      }
+      //   ]
+      // }
     ])
   ],
   declarations: [
